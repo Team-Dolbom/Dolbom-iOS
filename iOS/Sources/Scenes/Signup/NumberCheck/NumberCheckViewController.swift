@@ -4,7 +4,6 @@ import Then
 import RxSwift
 import RxCocoa
 
-
 class NumberCheckViewController: BaseViewController {
     let viewModel = NumberCheckViewModel()
     let numberTextField = UITextField().then {
@@ -25,11 +24,32 @@ class NumberCheckViewController: BaseViewController {
         $0.layer.cornerRadius = 20
         $0.backgroundColor = UIColor(named: "Enabled")
     }
+    override func configureVC() {
+        numberTextField.addTarget(self, action: #selector(numberTextFieldDidchanged(_:)), for: .editingChanged)
+        codeTextField.addTarget(self, action: #selector(codeTextFieldDidchanged(_:)), for: .editingChanged)
+    }
+    @objc func numberTextFieldDidchanged(_ textField: UITextField) {
+        if let text = numberTextField.text, !text.isEmpty {
+            sendCodeButton.backgroundColor = UIColor(named: "Main")
+        } else {
+            sendCodeButton.backgroundColor = UIColor(named: "Enabled")
+        }
+    }
+    @objc func codeTextFieldDidchanged(_ textField: UITextField) {
+        if let text = codeTextField.text, !text.isEmpty {
+            nextButton.backgroundColor = UIColor(named: "Main")
+        } else {
+            nextButton.backgroundColor = UIColor(named: "Enabled")
+        }
+    }
+
     override func bind() {
+//        self.nextButton.isEnabled = true
         let viewController = SignupViewController()
         let input = NumberCheckViewModel.Input(
             numberText: numberTextField.rx.text.orEmpty.asDriver(),
             codenumber: codeTextField.rx.text.orEmpty.asDriver(),
+            sendButtonDidTaped: sendCodeButton.rx.tap.asSignal(),
             nextButtonDidTaped: nextButton.rx.tap.asSignal()
         )
         let output = viewModel.transform(input)
@@ -37,6 +57,7 @@ class NumberCheckViewController: BaseViewController {
             switch $0 {
             case true:
                 print("성공")
+                viewController.number.onNext(self.numberTextField.text ?? "")
                 self.navigationController?.pushViewController(viewController, animated: true)
             case false:
                 print("실패")
