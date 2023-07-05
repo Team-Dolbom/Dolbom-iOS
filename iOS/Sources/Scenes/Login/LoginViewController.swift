@@ -40,13 +40,21 @@ class LoginViewController: BaseViewController {
         $0.setTitleColor(UIColor.black, for: .normal)
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .ultraLight)
     }
-//    override func configureVC() {
-//        let signupView = NumberCheckViewController()
-//        signupButton.rx.tap
-//            .bind {
-//                self.navigationController?.pushViewController(signupView, animated: true)
-//            }.disposed(by: disposeBag)
-//    }
+    override func configureVC() {
+        let signupView = NumberCheckViewController()
+        signupButton.rx.tap
+            .bind {
+                self.navigationController?.pushViewController(signupView, animated: true)
+            }.disposed(by: disposeBag)
+        idTextField.addTarget(self, action: #selector(idTextFieldDidChanged), for: .editingChanged)
+    }
+    @objc func idTextFieldDidChanged() {
+        if let text = idTextField.text, !text.isEmpty {
+            loginButton.backgroundColor = UIColor(named: "Main")
+        } else {
+            loginButton.backgroundColor = UIColor(named: "Enabled")
+        }
+    }
     override func bind() {
         let input = LoginViewModel.Input(
             idText: idTextField.rx.text.orEmpty.asDriver(),
@@ -57,7 +65,7 @@ class LoginViewController: BaseViewController {
         output.result.subscribe(onNext: {
             switch $0 {
             case true:
-                  self.navigationController?.pushViewController(CommunityViewController(), animated: true)
+                  self.navigationController?.pushViewController(TabBarController(), animated: true)
                   print("성공")
             case false:
                 print("실패")

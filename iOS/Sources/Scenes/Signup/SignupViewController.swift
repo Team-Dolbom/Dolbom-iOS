@@ -5,7 +5,7 @@ import RxSwift
 import RxCocoa
 
 class SignupViewController: BaseViewController {
-    public var number: String = ""
+    var number = BehaviorSubject<String>(value: "")
     let viewModel = SignupViewModel()
     let nameTextField = UITextField().then {
         $0.setSignupTextField(placeholderText: "닉네임")
@@ -28,7 +28,7 @@ class SignupViewController: BaseViewController {
     let checkPasswordTextField = UITextField().then {
         $0.setSignupTextField(placeholderText: "비밀번호 확인")
     }
-    
+
     let signupButton = UIButton(type: .system).then {
         $0.setTitle("회원가입", for: .normal)
         $0.layer.cornerRadius = 20
@@ -66,6 +66,7 @@ class SignupViewController: BaseViewController {
             idText: idTextField.rx.text.orEmpty.asDriver(),
             passwortText: passwordTextField.rx.text.orEmpty.asDriver(),
             checkPasswordText: checkPasswordTextField.rx.text.orEmpty.asDriver(),
+            numberText: number.asDriver(onErrorJustReturn: ""),
             signupButtonDidTap: signupButton.rx.tap.asSignal()
         )
         let output = viewModel.transform(input)
