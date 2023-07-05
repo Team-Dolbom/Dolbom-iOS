@@ -17,10 +17,13 @@ class CommunityViewController: BaseViewController {
         $0.rowHeight = 93
         $0.separatorStyle = .none
     }
-
+    let writeButton = UIButton(type: .system).then {
+        $0.setTitle("+글쓰기", for: .normal)
+        $0.setTitleColor(UIColor.white, for: .normal)
+        $0.backgroundColor = UIColor(named: "Main")
+    }
     override func configureVC() {
         communityTableView.delegate = self
-        communityTableView.dataSource = self
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -34,9 +37,9 @@ class CommunityViewController: BaseViewController {
             cellIdentifier: "CommunityTableViewCell",
             cellType: CommunityTableViewCell.self)
         ) { _, item, cell in
-            cell.zoneLabel.text = "\(item.region)"
-            cell.checkLabel.text = item.view
-            cell.titleLabel.text = item.title
+//            cell.zoneLabel.text = "\(item.region)"
+//            cell.checkLabel.text = item.view
+//            cell.titleLabel.text = item.title
         }
     }
 
@@ -61,17 +64,7 @@ class CommunityViewController: BaseViewController {
     }
 }
 
-extension CommunityViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
-    }
-
-    internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: "CommunityTableViewCell",
-            for: indexPath) as? CommunityTableViewCell else { return UITableViewCell() }
-        return cell
-    }
+extension CommunityViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         tableView.deselectRow(at: indexPath, animated: true)
