@@ -2,14 +2,14 @@ import Foundation
 import Moya
 
 enum API {
-//user
+// user
     case login(id: String, password: String)
     case signup(name: String, id: String, password: String, phoneNumber: String)
 
-//auth
+// auth
     case sendNumber(number: String)
 
-//post
+// post
     case getCommunity
 }
 
@@ -29,7 +29,7 @@ extension API: TargetType {
             return "/auth/sms"
 
         case .getCommunity:
-            return "/post"
+            return "/post/"
         }
     }
     var method: Moya.Method {

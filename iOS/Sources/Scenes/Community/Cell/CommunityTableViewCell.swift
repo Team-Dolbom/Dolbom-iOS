@@ -5,35 +5,35 @@ import Then
 class CommunityTableViewCell: UITableViewCell {
 
     var postId = 0
-    var fieldView = UIView().then {
+    private let fieldView = UIView().then {
         $0.backgroundColor = UIColor(named: "Main")
         $0.layer.cornerRadius = 2
     }
-    var fieldText = UILabel().then {
-//        $0.text = "육아"
+    let fieldText = UILabel().then {
+        $0.text = ""
         $0.textColor = .white
         $0.font = UIFont.systemFont(ofSize: 6, weight: .light)
     }
-    var titleLabel = UILabel().then {
-//        $0.text = "고민입니다"
+    let titleLabel = UILabel().then {
+        $0.text = ""
         $0.font = UIFont.systemFont(ofSize: 16, weight: .bold)
     }
-    var detailLabel = UILabel().then {
-//        $0.text = "저는 교대근무를 하는데 어쩌구 저쩌구 ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ"
+    let detailLabel = UILabel().then {
+        $0.text = ""
         $0.font = UIFont.systemFont(ofSize: 10, weight: .regular)
         $0.textColor = UIColor(named: "CellTextColor")
     }
-    var zoneLabel = UILabel().then {
-//        $0.text = "대전 ⋅0"
+    let zoneLabel = UILabel().then {
+        $0.text = ""
         $0.font = UIFont.systemFont(ofSize: 10, weight: .regular)
         $0.textColor = UIColor(named: "CellTextColor")
     }
-    var checkLabel = UILabel().then {
-//        $0.text = "조회 430"
+    let checkLabel = UILabel().then {
+        $0.text = ""
         $0.font = UIFont.systemFont(ofSize: 10, weight: .regular)
         $0.textColor = UIColor(named: "CellTextColor")
     }
-    var bottomLine = UIView().then {
+    private let bottomLine = UIView().then {
         $0.backgroundColor = UIColor(named: "LineColor")
     }
 
