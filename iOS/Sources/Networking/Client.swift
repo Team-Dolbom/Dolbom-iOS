@@ -11,6 +11,9 @@ enum API {
 
 // post
     case getCommunity
+    
+//offer
+    case getOffer
 }
 
 extension API: TargetType {
@@ -29,14 +32,18 @@ extension API: TargetType {
             return "/auth/sms"
 
         case .getCommunity:
-            return "/post/"
+            return "/post"
+
+        case .getOffer:
+            return "/offer"
+
         }
     }
     var method: Moya.Method {
         switch self {
         case .login, .signup, .sendNumber:
             return .post
-        case .getCommunity:
+        case .getCommunity, .getOffer:
             return .get
         }
     }
@@ -71,8 +78,9 @@ extension API: TargetType {
         switch self {
         case .login, .signup, .sendNumber:
             return Header.tokenIsEmpty.header()
-        case .getCommunity:
+        case .getCommunity, .getOffer:
             return Header.accessToken.header()
+
         }
     }
 }

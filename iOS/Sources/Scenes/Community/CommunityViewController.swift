@@ -17,7 +17,11 @@ class CommunityViewController: BaseViewController {
         $0.rowHeight = 93
         $0.separatorStyle = .none
     }
-
+    let writeButton = UIButton(type: .system).then {
+        $0.setTitle("+글쓰기", for: .normal)
+        $0.setTitleColor(UIColor.white, for: .normal)
+        $0.backgroundColor = UIColor(named: "Main")
+    }
     override func configureVC() {
         communityTableView.delegate = self
     }

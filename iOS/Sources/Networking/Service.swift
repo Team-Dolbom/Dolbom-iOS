@@ -52,7 +52,17 @@ final class Service {
                 return .just((nil, .fault))
             }
     }
-    
+
+    func getOffer() ->Single<(OfferDataModel?, NetworkingResult)> {
+        return provider.rx.request(.getCommunity)
+            .filterSuccessfulStatusCodes()
+            .map(OfferDataModel.self)
+            .map {return ($0, .okay)}
+            .catch { error in
+                print(error)
+                return .just((nil, .fault))
+            }
+    }
     func setNetworkError(_ error: Error) -> NetworkingResult {
         print(error)
         print(error.localizedDescription)
