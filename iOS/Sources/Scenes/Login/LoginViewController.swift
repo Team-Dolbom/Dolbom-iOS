@@ -26,10 +26,27 @@ class LoginViewController: BaseViewController {
     }
     let loginButton = UIButton(type: .system).then {
         $0.setTitle("로그인", for: .normal)
+        $0.setTitleColor(UIColor.white, for: .normal)
         $0.layer.cornerRadius = 20
         $0.backgroundColor = UIColor(named: "Enabled")
     }
-
+    let signupLabel = UILabel().then {
+        $0.text = "아직 회원이 아니신가요?"
+        $0.font = UIFont.systemFont(ofSize: 14, weight: .ultraLight)
+        $0.textColor = .gray
+    }
+    let signupButton = UIButton().then {
+        $0.setTitle("회원가입", for: .normal)
+        $0.setTitleColor(UIColor.black, for: .normal)
+        $0.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .ultraLight)
+    }
+//    override func configureVC() {
+//        let signupView = NumberCheckViewController()
+//        signupButton.rx.tap
+//            .bind {
+//                self.navigationController?.pushViewController(signupView, animated: true)
+//            }.disposed(by: disposeBag)
+//    }
     override func bind() {
         let input = LoginViewModel.Input(
             idText: idTextField.rx.text.orEmpty.asDriver(),
@@ -71,13 +88,27 @@ class LoginViewController: BaseViewController {
             $0.leading.trailing.equalTo(idTextField)
             $0.height.equalTo(61)
         }
+        signupLabel.snp.makeConstraints {
+            $0.top.equalTo(loginButton.snp.bottom).offset(20)
+            $0.leading.equalToSuperview().inset(98)
+            $0.height.equalTo(21)
+        }
+        signupButton.snp.makeConstraints {
+            $0.top.equalTo(loginButton.snp.bottom).offset(20)
+            $0.leading.equalTo(signupLabel.snp.trailing).offset(1)
+            $0.trailing.equalToSuperview().inset(101)
+            $0.height.equalTo(21)
+
+        }
     }
     override func addView() {
         [
             logoTitle,
             idTextField,
             passwordTextField,
-            loginButton
+            loginButton,
+            signupLabel,
+            signupButton
         ].forEach {view.addSubview($0)}
     }
 }
