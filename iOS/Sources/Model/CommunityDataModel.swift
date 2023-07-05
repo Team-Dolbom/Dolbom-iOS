@@ -1,9 +1,14 @@
-//
-//  CommunityDataModel.swift
-//  Dolbom-iOS
-//
-//  Created by 박도연 on 2023/07/05.
-//  Copyright © 2023 com.Dolbom. All rights reserved.
-//
-
 import Foundation
+
+struct CommunityDataModel: Codable {
+    let postList: [Post]
+}
+
+struct Post: Codable {
+    let id: Int
+    let category: String
+    let title: String
+    let content: String
+    let region: String
+    let view: Int
+}
