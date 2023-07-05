@@ -29,18 +29,20 @@ class CommunityViewController: BaseViewController {
         super.viewWillAppear(animated)
         communityList.accept(())
     }
-
     override func bind() {
-        let input = CommunityViewModel.Input(communityList: communityList.asSignal(onErrorJustReturn: ()))
+        let input = CommunityViewModel.Input(communityList: communityList.asSignal())
         let output = viewModel.transform(input)
         output.communityList.bind(to: communityTableView.rx.items(
             cellIdentifier: "CommunityTableViewCell",
-            cellType: CommunityTableViewCell.self)
-        ) { _, item, cell in
-//            cell.zoneLabel.text = "\(item.region)"
-//            cell.checkLabel.text = item.view
-//            cell.titleLabel.text = item.title
-        }
+            cellType: CommunityTableViewCell.self
+        )) { _, item, cell in
+            cell.checkLabel.text = "\(item.view)"
+            cell.detailLabel.text = item.content
+            cell.fieldText.text = item.category
+            cell.postId = item.id
+            cell.titleLabel.text = item.title
+            cell.zoneLabel.text = item.region
+        }.disposed(by: disposeBag)
     }
 
     override func addView() {

@@ -15,14 +15,14 @@ class TabBarController: UITabBarController {
 
         let communityImage = UIImage(named: "offer")?.withRenderingMode(.alwaysTemplate)
 
-        communityView.tabBarItem = UITabBarItem(title: "커뮤니티", image: communityImage
+        communityView.tabBarItem = UITabBarItem(title: "커뮤니티", image: UIImage(systemName: "house.fill")
                                                 , tag: 0)
-        offerView.tabBarItem = UITabBarItem(title: "제안", image: UIImage(systemName: "house.fill"), tag: 1)
-        myPageView.tabBarItem = UITabBarItem(title: "마이페이지", image: UIImage(systemName: "person.crop.circle.fill"), tag: 2)
-
-//        communityView.tabBarItem.selectedImage =
-
+        offerView.tabBarItem = UITabBarItem(title: "제안", image: communityImage, tag: 1)
+        myPageView.tabBarItem = UITabBarItem(
+            title: "마이페이지",
+            image: UIImage(systemName: "person.crop.circle.fill"),
+            tag: 2
+            )
         self.viewControllers = [communityView, offerView, myPageView]
     }
-    
 }
