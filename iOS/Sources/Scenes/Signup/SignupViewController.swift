@@ -2,9 +2,11 @@ import UIKit
 import Then
 import SnapKit
 import RxSwift
+import RxCocoa
 
 class SignupViewController: BaseViewController {
-
+    public var number: String = ""
+    let viewModel = SignupViewModel()
     let nameTextField = UITextField().then {
         $0.setSignupTextField(placeholderText: "닉네임")
     }
@@ -26,27 +28,58 @@ class SignupViewController: BaseViewController {
     let checkPasswordTextField = UITextField().then {
         $0.setSignupTextField(placeholderText: "비밀번호 확인")
     }
-    let numberTextField = UITextField().then {
-        $0.setSignupTextField(placeholderText: "전화번호")
-    }
-    let codeTextField = UITextField().then {
-        $0.setSignupTextField(placeholderText: "인증번호")
-    }
-    let sendCodeButton = UIButton(type: .system).then {
-        $0.setTitle("발송", for: .normal)
-        $0.setTitleColor(UIColor.white, for: .normal)
-        $0.layer.cornerRadius = 15
-        $0.backgroundColor = UIColor(named: "Enabled")
-    }
+    
     let signupButton = UIButton(type: .system).then {
         $0.setTitle("회원가입", for: .normal)
         $0.layer.cornerRadius = 20
         $0.setTitleColor(UIColor.white, for: .normal)
         $0.backgroundColor = UIColor(named: "Enabled")
     }
+    private func validpassword(mypassword: String) -> Bool {
+        let passwordreg =  "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{6,30}"
+        let passwordtesting = NSPredicate(format: "SELF MATCHES %@", passwordreg)
+        return passwordtesting.evaluate(with: mypassword)
+    }
+    override func configureVC() {
+        passwordTextField.rx.text.orEmpty
+            .filter { !$0.isEmpty && $0 ==  self.checkPasswordTextField.text}
+            .map {self.validpassword(mypassword: $0)}
+            .subscribe(onNext: { [unowned self] in
+                self.signupButton.isEnabled = $0
+                switch $0 {
+                case true:
+                    signupButton.backgroundColor = .gray
+                    signupButton.rx.tap
+                        .bind {
+                            self.navigationController?.pushViewController(LoginViewController(), animated: true)
+                        }.disposed(by: disposeBag)
+                case false:
+                    signupButton.isEnabled = true
+                }
+            }).disposed(by: disposeBag)
+    }
 
-    
-
+    override func bind() {
+        let viewController = LoginViewController()
+        let input = SignupViewModel.Input(
+            nameText: nameTextField.rx.text.orEmpty.asDriver(),
+            idText: idTextField.rx.text.orEmpty.asDriver(),
+            passwortText: passwordTextField.rx.text.orEmpty.asDriver(),
+            checkPasswordText: checkPasswordTextField.rx.text.orEmpty.asDriver(),
+            signupButtonDidTap: signupButton.rx.tap.asSignal()
+        )
+        let output = viewModel.transform(input)
+        output.result
+            .subscribe(onNext: {
+                switch $0 {
+                case true:
+                    print("성공")
+                    self.navigationController?.pushViewController(LoginViewController(), animated: true)
+                default:
+                    print("실패")
+                }
+            }).disposed(by: disposeBag)
+    }
 
     override func setLayout() {
         nameTextField.snp.makeConstraints {
@@ -84,26 +117,9 @@ class SignupViewController: BaseViewController {
             $0.leading.trailing.equalToSuperview().inset(40)
             $0.height.equalTo(45)
         }
-        numberTextField.snp.makeConstraints {
-            $0.top.equalTo(checkPasswordTextField.snp.bottom).offset(50)
-            $0.leading.equalToSuperview().inset(40)
-            $0.width.equalTo(238)
-            $0.height.equalTo(45)
-        }
-        sendCodeButton.snp.makeConstraints {
-            $0.top.equalTo(numberTextField.snp.top)
-            $0.leading.equalTo(numberTextField.snp.trailing).offset(5)
-            $0.trailing.equalToSuperview().inset(43)
-            $0.width.equalTo(65)
-            $0.height.equalTo(45)
-        }
-        codeTextField.snp.makeConstraints {
-            $0.top.equalTo(sendCodeButton.snp.bottom).offset(50)
-            $0.leading.trailing.equalToSuperview().inset(40)
-            $0.height.equalTo(45)
-        }
+
         signupButton.snp.makeConstraints {
-            $0.top.equalTo(codeTextField.snp.bottom).offset(55)
+            $0.top.equalTo(checkPasswordTextField.snp.bottom).offset(55)
             $0.leading.trailing.equalToSuperview().inset(40)
             $0.height.equalTo(45)
         }
@@ -118,9 +134,6 @@ class SignupViewController: BaseViewController {
             passwordTextField,
             detailPasswordLabel,
             checkPasswordTextField,
-            numberTextField,
-            sendCodeButton,
-            codeTextField,
             signupButton
         ].forEach {view.addSubview($0)}
     }
