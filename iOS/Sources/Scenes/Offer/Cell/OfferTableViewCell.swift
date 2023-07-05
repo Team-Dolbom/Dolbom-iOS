@@ -2,38 +2,38 @@ import UIKit
 import SnapKit
 import Then
 
-class CommunityTableViewCell: UITableViewCell {
+class OfferTableViewCell: UITableViewCell {
 
     var postId = 0
-    private let fieldView = UIView().then {
+    var fieldView = UIView().then {
         $0.backgroundColor = UIColor(named: "Main")
         $0.layer.cornerRadius = 2
     }
-    let fieldText = UILabel().then {
-        $0.text = ""
+    var fieldText = UILabel().then {
+//        $0.text = "육아"
         $0.textColor = .white
         $0.font = UIFont.systemFont(ofSize: 6, weight: .light)
     }
-    let titleLabel = UILabel().then {
-        $0.text = ""
+    var titleLabel = UILabel().then {
+//        $0.text = "고민입니다"
         $0.font = UIFont.systemFont(ofSize: 16, weight: .bold)
     }
-    let detailLabel = UILabel().then {
-        $0.text = ""
+    var detailLabel = UILabel().then {
+//        $0.text = "저는 교대근무를 하는데 어쩌구 저쩌구 ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ"
         $0.font = UIFont.systemFont(ofSize: 10, weight: .regular)
         $0.textColor = UIColor(named: "CellTextColor")
     }
-    let zoneLabel = UILabel().then {
-        $0.text = ""
+    var zoneLabel = UILabel().then {
+//        $0.text = "대전 ⋅0"
         $0.font = UIFont.systemFont(ofSize: 10, weight: .regular)
         $0.textColor = UIColor(named: "CellTextColor")
     }
-    let checkLabel = UILabel().then {
-        $0.text = ""
+    var checkLabel = UILabel().then {
+//        $0.text = "조회 430"
         $0.font = UIFont.systemFont(ofSize: 10, weight: .regular)
         $0.textColor = UIColor(named: "CellTextColor")
     }
-    private let bottomLine = UIView().then {
+    var bottomLine = UIView().then {
         $0.backgroundColor = UIColor(named: "LineColor")
     }
 

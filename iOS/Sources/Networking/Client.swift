@@ -2,15 +2,18 @@ import Foundation
 import Moya
 
 enum API {
-//user
+// user
     case login(id: String, password: String)
     case signup(name: String, id: String, password: String, phoneNumber: String)
 
-//auth
+// auth
     case sendNumber(number: String)
 
-//post
+// post
     case getCommunity
+    
+//offer
+    case getOffer
 }
 
 extension API: TargetType {
@@ -30,13 +33,17 @@ extension API: TargetType {
 
         case .getCommunity:
             return "/post"
+
+        case .getOffer:
+            return "/offer"
+
         }
     }
     var method: Moya.Method {
         switch self {
         case .login, .signup, .sendNumber:
             return .post
-        case .getCommunity:
+        case .getCommunity, .getOffer:
             return .get
         }
     }
@@ -71,8 +78,9 @@ extension API: TargetType {
         switch self {
         case .login, .signup, .sendNumber:
             return Header.tokenIsEmpty.header()
-        case .getCommunity:
+        case .getCommunity, .getOffer:
             return Header.accessToken.header()
+
         }
     }
 }
