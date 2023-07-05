@@ -72,4 +72,14 @@ extension CommunityViewController: UITableViewDelegate, UITableViewDataSource {
             for: indexPath) as? CommunityTableViewCell else { return UITableViewCell() }
         return cell
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        switch indexPath.row {
+        default:
+            navigationController?.pushViewController(DetailViewController(), animated: true)
+        }
+
+    }
 }
