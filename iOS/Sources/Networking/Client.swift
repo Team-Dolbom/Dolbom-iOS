@@ -4,16 +4,19 @@ import Moya
 enum API {
 //user
     case login(id: String, password: String)
-    case signup(name: String, id: String, password: String)
+    case signup(name: String, id: String, password: String, phoneNumber: String)
 
 //auth
     case sendNumber(number: String)
+
+//post
+    case getCommunity
 }
 
 extension API: TargetType {
 
     var baseURL: URL {
-        return URL(string: "http://172.20.10.3:8080")!
+        return URL(string: "http://172.20.10.2:8080")!
     }
     var path: String {
         switch self {
@@ -23,13 +26,18 @@ extension API: TargetType {
             return "/user/signup"
 
         case .sendNumber:
-            return "auth/sms"
+            return "/auth/sms"
+
+        case .getCommunity:
+            return "/post"
         }
     }
     var method: Moya.Method {
         switch self {
         case .login, .signup, .sendNumber:
             return .post
+        case .getCommunity:
+            return .get
         }
     }
 
@@ -41,12 +49,13 @@ extension API: TargetType {
                                             "accountId": id,
                                             "password": password
                                         ], encoding: JSONEncoding.default)
-        case .signup(let name, let id, let password):
+        case .signup(let name, let id, let password, let number):
             return .requestParameters(parameters:
                                         [
-                                            "name": name,
-                                            "ID": id,
-                                            "PW": password
+                                            "nickname": name,
+                                            "accountId": id,
+                                            "password": password,
+                                            "phoneNumber": number
                                         ], encoding: JSONEncoding.default)
         case .sendNumber(let number):
             return .requestParameters(parameters: [
@@ -62,6 +71,8 @@ extension API: TargetType {
         switch self {
         case .login, .signup, .sendNumber:
             return Header.tokenIsEmpty.header()
+        case .getCommunity:
+            return Header.accessToken.header()
         }
     }
 }
