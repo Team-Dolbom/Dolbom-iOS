@@ -58,7 +58,10 @@ class NumberCheckViewController: BaseViewController {
             case true:
                 print("성공")
                 viewController.number.onNext(self.numberTextField.text ?? "")
-                self.navigationController?.pushViewController(viewController, animated: true)
+                self.nextButton.rx.tap
+                    .bind {
+                        self.navigationController?.pushViewController(SignupViewController(), animated: true)
+                    }
             case false:
                 print("실패")
             }

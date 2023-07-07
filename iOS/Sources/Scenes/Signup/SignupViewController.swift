@@ -27,6 +27,7 @@ class SignupViewController: BaseViewController {
     }
     let checkPasswordTextField = UITextField().then {
         $0.setSignupTextField(placeholderText: "비밀번호 확인")
+        $0.addTarget(self, action: #selector(idTextFieldDidChanged), for: .editingChanged)
     }
 
     let signupButton = UIButton(type: .system).then {
@@ -48,10 +49,10 @@ class SignupViewController: BaseViewController {
                 self.signupButton.isEnabled = $0
                 switch $0 {
                 case true:
-                    signupButton.backgroundColor = .gray
+                    signupButton.backgroundColor = UIColor(named: "Main")
                     signupButton.rx.tap
                         .bind {
-                            self.navigationController?.pushViewController(LoginViewController(), animated: true)
+                            self.navigationController?.pushViewController(SignupViewController(), animated: true)
                         }.disposed(by: disposeBag)
                 case false:
                     signupButton.isEnabled = true
@@ -59,6 +60,13 @@ class SignupViewController: BaseViewController {
             }).disposed(by: disposeBag)
     }
 
+    @objc func idTextFieldDidChanged() {
+        if let text = idTextField.text, !text.isEmpty {
+            signupButton.backgroundColor = UIColor(named: "Main")
+        } else {
+            signupButton.backgroundColor = UIColor(named: "Enabled")
+        }
+    }
     override func bind() {
         let viewController = LoginViewController()
         let input = SignupViewModel.Input(
