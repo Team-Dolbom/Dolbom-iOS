@@ -11,7 +11,7 @@ class MyPageViewController: BaseViewController {
 
     }
     let nickName = UILabel().then {
-        $0.text = "닉네임"
+        $0.text = "qwer1234"
         $0.font = UIFont.systemFont(ofSize: 16, weight: .bold)
     }
     let licensButton = UIButton().then {
@@ -42,7 +42,7 @@ class MyPageViewController: BaseViewController {
         }
         nickName.snp.makeConstraints {
             $0.top.equalTo(profileImageView.snp.bottom).offset(7)
-            $0.leading.equalToSuperview().inset(174)
+            $0.centerX.equalToSuperview().inset(170)
             $0.height.equalTo(24)
         }
         licensButton.snp.makeConstraints {
