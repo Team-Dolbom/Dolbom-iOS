@@ -12,7 +12,7 @@ class OfferTableViewCell: UITableViewCell {
     var fieldText = UILabel().then {
 //        $0.text = "육아"
         $0.textColor = .white
-        $0.font = UIFont.systemFont(ofSize: 6, weight: .light)
+        $0.font = UIFont.systemFont(ofSize: 8, weight: .light)
     }
     var titleLabel = UILabel().then {
 //        $0.text = "고민입니다"
@@ -66,12 +66,12 @@ class OfferTableViewCell: UITableViewCell {
         }
         titleLabel.snp.makeConstraints {
             $0.top.equalTo(fieldView.snp.bottom).offset(5)
-            $0.leading.equalToSuperview().inset(17)
+            $0.leading.trailing.equalToSuperview().inset(17)
             $0.height.equalTo(16)
         }
         detailLabel.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(10)
-            $0.leading.equalToSuperview().inset(17)
+            $0.leading.trailing.equalToSuperview().inset(17)
             $0.height.equalTo(20)
         }
         zoneLabel.snp.makeConstraints {
