@@ -53,8 +53,8 @@ final class Service {
             }
     }
 
-    func getOffer() ->Single<(OfferDataModel?, NetworkingResult)> {
-        return provider.rx.request(.getCommunity)
+    func getOffer() -> Single<(OfferDataModel?, NetworkingResult)> {
+        return provider.rx.request(.getOffer)
             .filterSuccessfulStatusCodes()
             .map(OfferDataModel.self)
             .map {return ($0, .okay)}
@@ -63,6 +63,15 @@ final class Service {
                 return .just((nil, .fault))
             }
     }
+
+    func writeOffer(_ babysitter: Bool, _ title: String, _ content: String, _ intro: String) -> Single<NetworkingResult> {
+        return provider.rx.request(.writeOffer(babySitter: babysitter, title: title, content: content, intro: intro)).filterSuccessfulStatusCodes()
+            .map { _ -> NetworkingResult in
+                return .created
+            }
+            .catch {[unowned self] in return .just(setNetworkError($0))}
+    }
+
     func setNetworkError(_ error: Error) -> NetworkingResult {
         print(error)
         print(error.localizedDescription)
