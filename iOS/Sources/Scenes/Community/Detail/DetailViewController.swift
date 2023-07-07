@@ -32,7 +32,16 @@ class DetailViewController: BaseViewController {
         $0.backgroundColor = UIColor(named: "Main")
         $0.layer.cornerRadius = 12
         $0.setTitle("신청", for: .normal)
+        $0.setTitleColor(UIColor.white, for: .normal)
         $0.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+    }
+    override func configureVC() {
+        let nextViewController = TabBarController()
+        nextViewController.modalPresentationStyle = .fullScreen
+        applicationButton.rx.tap
+            .bind {
+                self.navigationController?.popViewController(animated: true)
+            }
     }
 
     override func addView() {
@@ -41,8 +50,8 @@ class DetailViewController: BaseViewController {
             titleLabel,
             contentLabel,
             categoryInfoLabel,
-            introLabel
-//            applicationButton
+            introLabel,
+            applicationButton
         ].forEach {
             view.addSubview($0)
         }
@@ -72,6 +81,11 @@ class DetailViewController: BaseViewController {
             $0.leading.trailing.equalToSuperview().inset(32)
             $0.top.equalTo(categoryInfoLabel.snp.bottom).offset(10)
             $0.height.equalTo(125)
+        }
+        applicationButton.snp.makeConstraints {
+            $0.top.equalTo(introLabel.snp.bottom).offset(20)
+            $0.leading.trailing.equalToSuperview().inset(8)
+            $0.height.equalTo(40)
         }
     }
 }
