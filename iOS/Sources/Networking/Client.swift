@@ -11,15 +11,16 @@ enum API {
 
 // post
     case getCommunity
-    
+
 //offer
     case getOffer
+    case writeOffer(babySitter: Bool, title: String, content: String, intro: String)
 }
 
 extension API: TargetType {
 
     var baseURL: URL {
-        return URL(string: "http://172.20.10.2:8080")!
+        return URL(string: "http://172.20.10.3:8080")!
     }
     var path: String {
         switch self {
@@ -32,16 +33,19 @@ extension API: TargetType {
             return "/auth/sms"
 
         case .getCommunity:
-            return "/post"
+            return "/post/"
 
+//Offer
+        case .writeOffer:
+            return "/offer/create"
         case .getOffer:
-            return "/offer"
-
+            return "/offer/list"
+            
         }
     }
     var method: Moya.Method {
         switch self {
-        case .login, .signup, .sendNumber:
+        case .login, .signup, .sendNumber, .writeOffer:
             return .post
         case .getCommunity, .getOffer:
             return .get
@@ -62,11 +66,19 @@ extension API: TargetType {
                                             "nickname": name,
                                             "accountId": id,
                                             "password": password,
-                                            "phoneNumber": number
+                                            "phoneNumber": "01032396466"
                                         ], encoding: JSONEncoding.default)
         case .sendNumber(let number):
             return .requestParameters(parameters: [
                                                     "phoneNumber": number
+                                                  ],
+                                      encoding: JSONEncoding.default)
+        case .writeOffer(let babySitter, let title, let content, let intro):
+            return .requestParameters(parameters: [
+                                                    "babySitter": babySitter,
+                                                    "title": title,
+                                                    "content": content,
+                                                    "intro": intro
                                                   ],
                                       encoding: JSONEncoding.default)
         default:
@@ -78,9 +90,8 @@ extension API: TargetType {
         switch self {
         case .login, .signup, .sendNumber:
             return Header.tokenIsEmpty.header()
-        case .getCommunity, .getOffer:
+        case .getCommunity, .getOffer, .writeOffer:
             return Header.accessToken.header()
-
         }
     }
 }
