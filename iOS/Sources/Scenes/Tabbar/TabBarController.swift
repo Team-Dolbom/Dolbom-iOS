@@ -2,6 +2,13 @@ import UIKit
 
 class TabBarController: UITabBarController {
 
+    override func viewWillAppear(_ animated: Bool) {
+        if #available(iOS 16.0, *) {
+            self.navigationItem.leftBarButtonItem?.isHidden = true
+        } else {
+            // Fallback on earlier versions
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabBar()
@@ -15,14 +22,21 @@ class TabBarController: UITabBarController {
 
         let communityImage = UIImage(named: "offer")?.withRenderingMode(.alwaysTemplate)
 
-        communityView.tabBarItem = UITabBarItem(title: "커뮤니티", image: UIImage(systemName: "house.fill")
-                                                , tag: 0)
-        offerView.tabBarItem = UITabBarItem(title: "제안", image: communityImage, tag: 1)
+        communityView.tabBarItem = UITabBarItem(
+            title: "커뮤니티",
+            image: UIImage(systemName: "house.fill"),
+            tag: 0
+        )
+        offerView.tabBarItem = UITabBarItem(
+            title: "제안",
+            image: communityImage,
+            tag: 1
+        )
         myPageView.tabBarItem = UITabBarItem(
             title: "마이페이지",
             image: UIImage(systemName: "person.crop.circle.fill"),
             tag: 2
-            )
-        self.viewControllers = [communityView, offerView, myPageView]
+        )
+        self.setViewControllers([communityView, offerView, myPageView], animated: true)
     }
 }
