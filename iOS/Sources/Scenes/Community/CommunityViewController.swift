@@ -26,6 +26,7 @@ class CommunityViewController: BaseViewController {
         communityTableView.delegate = self
     }
     override func viewWillAppear(_ animated: Bool) {
+        self.navigationItem.setHidesBackButton(true, animated: true)
         super.viewWillAppear(animated)
         communityList.accept(())
     }
@@ -36,13 +37,14 @@ class CommunityViewController: BaseViewController {
             cellIdentifier: "CommunityTableViewCell",
             cellType: CommunityTableViewCell.self
         )) { _, item, cell in
-            cell.checkLabel.text = "\(item.view)"
+            cell.checkLabel.text = " 조회 \(item.view)"
             cell.detailLabel.text = item.content
             cell.fieldText.text = item.category
             cell.postId = item.id
             cell.titleLabel.text = item.title
             cell.zoneLabel.text = item.region
         }.disposed(by: disposeBag)
+        communityList.accept(())
     }
 
     override func addView() {
