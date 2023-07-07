@@ -8,6 +8,16 @@ class LoginViewController: BaseViewController {
 
     let viewModel = LoginViewModel()
 
+    let logoRedView = UIView().then {
+        $0.backgroundColor = UIColor(named: "LogoRed")
+    }
+    let logoYellowView = UIView().then {
+        $0.backgroundColor = UIColor(named: "LogoYellow")
+    }
+    let logoGreenView = UIView().then {
+        $0.backgroundColor = UIColor(named: "LogoGreen")
+    }
+
     let logoTitle = UILabel().then {
         $0.text = "돌봄"
         $0.font = UIFont.systemFont(ofSize: 64, weight: .bold)
@@ -56,6 +66,8 @@ class LoginViewController: BaseViewController {
         }
     }
     override func bind() {
+        let nextViewController = BaseNavigationController(rootViewController: TabBarController())
+        nextViewController.modalPresentationStyle = .fullScreen
         let input = LoginViewModel.Input(
             idText: idTextField.rx.text.orEmpty.asDriver(),
             passwordText: passwordTextField.rx.text.orEmpty.asDriver(),
@@ -65,17 +77,31 @@ class LoginViewController: BaseViewController {
         output.result.subscribe(onNext: {
             switch $0 {
             case true:
-                  self.navigationController?.pushViewController(TabBarController(), animated: true)
+                self.present(nextViewController, animated: true)
                   print("성공")
             case false:
                 print("실패")
 
             }
         }).disposed(by: disposeBag)
-        
     }
 
     override func setLayout() {
+        logoRedView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(230)
+            $0.leading.equalToSuperview().inset(200)
+            $0.width.height.equalTo(11)
+        }
+        logoYellowView.snp.makeConstraints {
+            $0.top.equalTo(logoRedView.snp.top)
+            $0.leading.equalTo(logoRedView.snp.trailing).offset(4)
+            $0.width.height.equalTo(11)
+        }
+        logoGreenView.snp.makeConstraints {
+            $0.top.equalTo(logoRedView.snp.top)
+            $0.leading.equalTo(logoYellowView.snp.trailing).offset(4)
+            $0.width.height.equalTo(11)
+        }
         logoTitle.snp.makeConstraints {
             $0.top.equalToSuperview().inset(235)
             $0.leading.trailing.equalToSuperview().inset(137)
@@ -111,6 +137,9 @@ class LoginViewController: BaseViewController {
     }
     override func addView() {
         [
+            logoRedView,
+            logoYellowView,
+            logoGreenView,
             logoTitle,
             idTextField,
             passwordTextField,
