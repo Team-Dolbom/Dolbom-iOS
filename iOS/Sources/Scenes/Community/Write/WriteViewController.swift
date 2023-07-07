@@ -3,13 +3,11 @@ import Then
 import SnapKit
 
 class WriteViewController: BaseViewController {
-//    let doneButton = UIBarButtonItem(title: "완료", style: .done, target: self, action: nil)
 
-    override func viewDidLoad() {
-//        self.navigationItem.title = "글쓰기"
-//        self.navigationItem.rightBarButtonItem = doneButton
-        view.backgroundColor = .white
-        
+    override func configureVC() {
+        let doneButton = UIBarButtonItem(title: "완료", style: .done, target: self, action: nil)
+        self.navigationItem.title = "글쓰기"
+        self.navigationItem.rightBarButtonItem = doneButton
     }
     let titleTextField = UITextField().then {
         $0.placeholder = "제목을 입력해주세요"
